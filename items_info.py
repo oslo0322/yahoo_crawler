@@ -8,10 +8,9 @@ from bs4 import BeautifulSoup
 from constant import BASE_URL, QUERY_TIME_INTERVAL
 
 def get_soup_by_url(url: str) -> BeautifulSoup:
-    # encoded_url = parse.quote(url, ':/')
     time.sleep(QUERY_TIME_INTERVAL)
     try:
-        data = urlopen(url)
+        data = urlopen(str(parse.quote(url, ':/')))
     except Exception:
         print(">>"*5, url)
         raise

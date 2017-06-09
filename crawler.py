@@ -108,10 +108,7 @@ def get_refreshed_iter(category_type: str, id_number: str, iter_key_name: str) -
      return iter(refreshed_result[iter_key_name])
 
 
-if __name__ == '__main__':
-
-     item_url = get_first_item_url(BASE_URL)
-     print(item_url)
+def main(item_url):
      soup = get_soup_by_url(item_url)
      category_result = get_all_categories(soup)
 
