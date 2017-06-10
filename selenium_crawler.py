@@ -21,6 +21,7 @@ def browser_helper():
     finally:
         browser.quit()
 
+
 def get_first_item(browser, link):
     browser.get(link)
     browser.execute_script("window.scrollTo(0, 1500);")
@@ -32,6 +33,7 @@ def get_first_item(browser, link):
         if find_first_item(href):
             return href
 
+
 def go_to_best(browser, link):
     browser.get(link)
     for element in browser.find_elements_by_id("cl-ordrank"):
@@ -39,14 +41,23 @@ def go_to_best(browser, link):
         if not best:
             # refresh and re-get
             return go_to_best(browser, link)
-        return best[0].get_property("href")
+        best[0].click()
+        return browser
 
+
+def get_best_info(browser):
+    for e in browser.find_elements_by_xpath("//div[@class='priceinfo']/span[@class='price']"):
+        print(e)
+        print(e.text)
+        # print(e.get_attribute("innerHTML"))
 
 def init_browser():
     with browser_helper() as browser:
         first_link = get_first_item(browser, BASE_URL)
-        best_link = go_to_best(browser, first_link)
-        main(best_link)
+        best_object = go_to_best(browser, first_link)
+        get_best_info(best_object)
+        input()
+        # main(best_link)
 
 
 
