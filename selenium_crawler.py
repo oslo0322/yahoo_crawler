@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from constant import BASE_URL, QUERY_TIME_INTERVAL
-from crawler import main
+
 
 def find_first_item(href):
     if href and "gdsale" in href:
@@ -26,7 +26,7 @@ def get_first_item(browser, link):
     browser.get(link)
     browser.execute_script("window.scrollTo(0, 1500);")
     element_present = EC.presence_of_element_located((By.CLASS_NAME, 'recmdbillboard'))
-    WebDriverWait(browser, 3).until(element_present)
+    WebDriverWait(browser, QUERY_TIME_INTERVAL).until(element_present)
 
     for i in browser.find_elements_by_tag_name("a"):
         href = i.get_property("href")
@@ -45,20 +45,17 @@ def go_to_best(browser, link):
         return browser
 
 
-def get_best_info(browser):
-    for e in browser.find_elements_by_xpath("//div[@class='priceinfo']/span[@class='price']"):
-        print(e)
-        print(e.text)
-        # print(e.get_attribute("innerHTML"))
+def get_best_item_price(browser):
+    element = browser.find_elements_by_xpath("//div[@class='priceinfo']/span[@class='price']")
+    if element:
+         return element[0].get_attribute("innerHTML")
+
 
 def init_browser():
     with browser_helper() as browser:
         first_link = get_first_item(browser, BASE_URL)
         best_object = go_to_best(browser, first_link)
-        get_best_info(best_object)
-        input()
-        # main(best_link)
-
+        price = get_best_item_price(best_object)
 
 
 if __name__ == '__main__':
